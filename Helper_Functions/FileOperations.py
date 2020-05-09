@@ -3,7 +3,7 @@ import os
 import shutil
 import subprocess
 
-import TextFormatter
+from Helper_Functions import TextFormatter
 
 
 def delete_directory(directory):
@@ -24,7 +24,7 @@ def delete_directory(directory):
 def move_directory(source_directory):
     subprocess.run(["clear"])
     try:
-        shutil.move(source_directory, 'Captured Images/Source Images')
+        shutil.move(source_directory, '../Captured Images/Source Images')
         print(TextFormatter.GREEN + "Successfully Moved Directory: " + TextFormatter.UNDERLINED + "{0}".format(
             source_directory) + TextFormatter.RESET)
     except OSError as errorMessage:
@@ -52,8 +52,10 @@ def delete_thumbnails(directory):
 
 def directory_generator():
     try:
-        if not os.path.exists('Captured Images/Source Images'):
+        if not os.path.exists('../Captured Images/Source Images'):
             os.makedirs('Captured Images/Source Images')
     except OSError as errorMessage:
         print(TextFormatter.RED + "Failed To Create Necessary Directories: " + TextFormatter.UNDERLINED + "{0}".format(
             errorMessage) + TextFormatter.RESET)
+    finally:
+        return None

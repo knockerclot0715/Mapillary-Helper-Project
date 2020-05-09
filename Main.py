@@ -1,8 +1,7 @@
 import subprocess
 import sys
 
-import FileOperations
-import MapillaryOperations
+from Helper_Functions import FileOperations, MapillaryOperations
 
 while True:
     FileOperations.directory_generator()

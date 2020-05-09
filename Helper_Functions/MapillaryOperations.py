@@ -1,6 +1,6 @@
 import subprocess
 
-import TextFormatter
+from Helper_Functions import TextFormatter
 
 
 def process_images():
