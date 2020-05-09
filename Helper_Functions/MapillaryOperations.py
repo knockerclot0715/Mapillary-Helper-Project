@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from Helper_Functions import TextFormatter
@@ -7,7 +8,7 @@ def process_images():
     try:
         subprocess.run(["clear"])
         subprocess.run(
-            ["Mapillary Program/mapillary_tools", "process", "--import_path", "Captured Images/Source Images",
+            [os.path.dirname(os.path.dirname(__file__)) + "/Mapillary Program/mapillary_tools", "process", "--import_path", os.path.dirname(os.path.dirname(__file__)) + "/Captured Images/Source Images",
              "--user_name", "knockerclot0715"])
     except OSError as errorMessage:
         print("Failed!", errorMessage)
@@ -20,8 +21,8 @@ def post_process_images():
     try:
         subprocess.run(["clear"])
         subprocess.run(
-            ["Mapillary Program/mapillary_tools", "post_process", "--move_all_images", "--advanced", "--import_path",
-             "Captured Images/"])
+            [os.path.dirname(os.path.dirname(__file__)) + "/Mapillary Program/mapillary_tools", "post_process", "--move_all_images", "--advanced", "--import_path",
+             os.path.dirname(os.path.dirname(__file__)) + "/Captured Images/"])
     except OSError as errorMessage:
         print("Failed!", errorMessage)
     finally:
@@ -33,7 +34,7 @@ def upload_images():
     try:
         subprocess.run(["clear"])
         subprocess.run(
-            ["Mapillary Program/mapillary_tools", "upload", "--import_path", "Captured Images/Source Images"])
+            [os.path.dirname(os.path.dirname(__file__)) + "/Mapillary Program/mapillary_tools", "upload", "--import_path", os.path.dirname(os.path.dirname(__file__)) + "/Captured Images/Source Images"])
     except OSError as errorMessage:
         print("Failed!", errorMessage)
     finally:
