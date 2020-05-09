@@ -9,7 +9,8 @@ import TextFormatter
 def delete_directory(directory):
     subprocess.run(["clear"])
     try:
-        shutil.rmtree(directory)
+        if os.path.exists(directory):
+            shutil.rmtree(directory)
         print(TextFormatter.GREEN + "Successfully Deleted Directory: " + TextFormatter.UNDERLINED + "{0}".format(
             directory) + TextFormatter.RESET)
     except OSError as errorMessage:
@@ -23,7 +24,7 @@ def delete_directory(directory):
 def move_directory(source_directory):
     subprocess.run(["clear"])
     try:
-        shutil.move(source_directory, 'Mapillary Program/Source Images')
+        shutil.move(source_directory, 'Captured Images/Source Images')
         print(TextFormatter.GREEN + "Successfully Moved Directory: " + TextFormatter.UNDERLINED + "{0}".format(
             source_directory) + TextFormatter.RESET)
     except OSError as errorMessage:
@@ -47,3 +48,12 @@ def delete_thumbnails(directory):
     finally:
         input(TextFormatter.YELLOW + TextFormatter.BLINK + "Press ENTER To Return..." + TextFormatter.RESET)
         return None
+
+
+def directory_generator():
+    try:
+        if not os.path.exists('Captured Images/Source Images'):
+            os.makedirs('Captured Images/Source Images')
+    except OSError as errorMessage:
+        print(TextFormatter.RED + "Failed To Create Necessary Directories: " + TextFormatter.UNDERLINED + "{0}".format(
+            errorMessage) + TextFormatter.RESET)

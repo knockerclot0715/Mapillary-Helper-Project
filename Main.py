@@ -5,6 +5,7 @@ import FileOperations
 import MapillaryOperations
 
 while True:
+    FileOperations.directory_generator()
     subprocess.run(["clear"])
     print("    (0) Import Images")
     print("    (1) Delete Thumbnail Images")
