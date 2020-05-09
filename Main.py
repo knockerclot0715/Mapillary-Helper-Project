@@ -3,8 +3,9 @@ import sys
 
 from Helper_Functions import FileOperations, MapillaryOperations
 
+FileOperations.directory_generator()
+
 while True:
-    FileOperations.directory_generator()
     subprocess.run(["clear"])
     print("    (0) Import Images")
     print("    (1) Delete Thumbnail Images")
@@ -19,15 +20,15 @@ while True:
         FileOperations.move_directory(
             input("Please Input The Directory Of The Captured Images You Would Like To Import: "))
     elif userOperation == "1":
-        FileOperations.delete_thumbnails("Captured Images/Source Images/**/*thumbnail.jpg")
+        FileOperations.delete_thumbnails("/Captured Images/Source Images/**/*thumbnail.jpg")
     elif userOperation == "2":
         MapillaryOperations.process_images()
     elif userOperation == "3":
         MapillaryOperations.post_process_images()
     elif userOperation == "4":
-        FileOperations.delete_directory('Captured Images/duplicates/')
+        FileOperations.delete_directory('/Captured Images/duplicates/')
     elif userOperation == "5":
-        FileOperations.delete_directory('Captured Images/uploaded/')
+        FileOperations.delete_directory('/Captured Images/uploaded/')
     elif userOperation == "6":
         MapillaryOperations.upload_images()
     elif userOperation == "-1":
