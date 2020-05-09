@@ -34,7 +34,7 @@ def upload_images():
     try:
         subprocess.run(["clear"])
         subprocess.run(
-            [os.path.dirname(os.path.dirname(__file__)) + "/Mapillary Program/mapillary_tools", "upload", "--import_path", os.path.dirname(os.path.dirname(__file__)) + "/Captured Images/Source Images"])
+            [os.path.dirname(os.path.dirname(__file__)) + "/Mapillary Program/mapillary_tools", "upload", "--import_path", os.path.dirname(os.path.dirname(__file__)) + "/Captured Images/to_be_uploaded"])
     except OSError as errorMessage:
         print("Failed!", errorMessage)
     finally:

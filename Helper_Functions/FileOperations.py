@@ -36,10 +36,10 @@ def move_directory(source_directory):
         return None
 
 
-def delete_thumbnails(directory):
+def delete_thumbnails():
     subprocess.run(["clear"])
     try:
-        directory = os.path.dirname(os.path.dirname(__file__)) + directory
+        directory = os.path.dirname(os.path.dirname(__file__)) + "/Captured Images/Source Images/**/*-thumb.jpg"
         for file in glob.glob(directory, recursive=True):
             os.remove(file)
         print(TextFormatter.GREEN + "Successfully Deleted All Thumbnails: " + TextFormatter.UNDERLINED + "{0}".format(

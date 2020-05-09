@@ -20,7 +20,7 @@ while True:
         FileOperations.move_directory(
             input("Please Input The Directory Of The Captured Images You Would Like To Import: "))
     elif userOperation == "1":
-        FileOperations.delete_thumbnails("/Captured Images/Source Images/**/*thumbnail.jpg")
+        FileOperations.delete_thumbnails()
     elif userOperation == "2":
         MapillaryOperations.process_images()
     elif userOperation == "3":
