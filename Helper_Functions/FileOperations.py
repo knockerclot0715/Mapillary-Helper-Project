@@ -78,15 +78,14 @@ def get_uploaded_images_metadata():
         for image_path in images_path:
             image_file = Image.open(image_path)
             meta_data = image_file._getexif()
-            EXIF_data = {}
+            exif_data = {}
             for tag, value in meta_data.items():
                 decoded = TAGS.get(tag, tag)
-                EXIF_data[decoded] = value
-            exif_gps = ast.literal_eval(EXIF_data['ImageDescription'])
-            GPSLatitude = exif_gps['MAPLatitude']
-            GPSLongitude = exif_gps['MAPLongitude']
-            UTCTime = datetime.datetime.strptime(exif_gps['MAPCaptureTime'], '%Y_%m_%d_%H_%M_%S_%f')
-            bulk_data.append((UTCTime, GPSLatitude, GPSLongitude))
-        if DatabaseInterface.check_database_connection():
-            if DatabaseInterface.insert(bulk_data):
-                print("Yes")
+                exif_data[decoded] = value
+            exif_gps = ast.literal_eval(exif_data['ImageDescription'])
+            latitude = exif_gps['MAPLatitude']
+            longitude = exif_gps['MAPLongitude']
+            time = datetime.datetime.strptime(exif_gps['MAPCaptureTime'], '%Y_%m_%d_%H_%M_%S_%f')
+            bulk_data.append((time, latitude, longitude))
+        if DatabaseInterface.insert(bulk_data):
+            return True

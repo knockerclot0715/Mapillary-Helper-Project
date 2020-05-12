@@ -29,7 +29,10 @@ while True:
     elif userOperation == "4":
         FileOperations.delete_directory('/Captured Images/duplicates/')
     elif userOperation == "5":
-        FileOperations.delete_directory('/Captured Images/uploaded/')
+        if FileOperations.get_uploaded_images_metadata():
+            FileOperations.delete_directory('/Captured Images/uploaded/')
+        else:
+            print("Unable to delete images as not all metadata was successfully added into the database")
     elif userOperation == "6":
         MapillaryOperations.upload_images()
     elif userOperation == "7":
