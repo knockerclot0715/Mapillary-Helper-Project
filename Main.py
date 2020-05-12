@@ -14,6 +14,7 @@ while True:
     print("    (4) Delete Duplicated Images")
     print("    (5) Delete Uploaded Images")
     print("    (6) Upload Images")
+    print("    (7) Archive Image Coordinates")
     print("    (-1) Quit")
     userOperation = input("Please Input Your Desired Operation: ")
     if userOperation == "0":
@@ -31,5 +32,7 @@ while True:
         FileOperations.delete_directory('/Captured Images/uploaded/')
     elif userOperation == "6":
         MapillaryOperations.upload_images()
+    elif userOperation == "7":
+        FileOperations.get_uploaded_images_metadata()
     elif userOperation == "-1":
         sys.exit(0)

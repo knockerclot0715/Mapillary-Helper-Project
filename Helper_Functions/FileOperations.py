@@ -8,7 +8,7 @@ import subprocess
 from PIL import Image
 from PIL.ExifTags import TAGS
 
-from Helper_Functions import TextFormatter
+from Helper_Functions import TextFormatter, DatabaseInterface
 
 
 def delete_directory(directory):
@@ -73,14 +73,20 @@ def get_uploaded_images_metadata():
     directory = os.path.dirname(os.path.dirname(__file__)) + '/Captured Images/uploaded/**/*.jpg'
     images_path = glob.glob(directory, recursive=True)
 
-    for image_path in images_path:
-        image_file = Image.open(image_path)
-        meta_data = image_file._getexif()
-        EXIF_data = {}
-        for tag, value in meta_data.items():
-            decoded = TAGS.get(tag, tag)
-            EXIF_data[decoded] = value
-        EXIF_data = ast.literal_eval(EXIF_data['ImageDescription'])
-        GPSLatitude = EXIF_data['MAPLatitude']
-        GPSLongitude = EXIF_data['MAPLongitude']
-        UTCTime = datetime.datetime.strptime(EXIF_data['MAPCaptureTime'], '%Y_%m_%d_%H_%M_%S_%f')
+    if DatabaseInterface.check_database_connection():
+        bulk_data = []
+        for image_path in images_path:
+            image_file = Image.open(image_path)
+            meta_data = image_file._getexif()
+            EXIF_data = {}
+            for tag, value in meta_data.items():
+                decoded = TAGS.get(tag, tag)
+                EXIF_data[decoded] = value
+            exif_gps = ast.literal_eval(EXIF_data['ImageDescription'])
+            GPSLatitude = exif_gps['MAPLatitude']
+            GPSLongitude = exif_gps['MAPLongitude']
+            UTCTime = datetime.datetime.strptime(exif_gps['MAPCaptureTime'], '%Y_%m_%d_%H_%M_%S_%f')
+            bulk_data.append((UTCTime, GPSLatitude, GPSLongitude))
+        if DatabaseInterface.check_database_connection():
+            if DatabaseInterface.insert(bulk_data):
+                print("Yes")
