@@ -8,7 +8,7 @@ import subprocess
 from PIL import Image
 from PIL.ExifTags import TAGS
 
-from Helper_Functions import TextFormatter, DatabaseInterface
+from Helper_Functions import TextFormatter, DatabaseIO
 
 
 def delete_directory(directory):
@@ -73,7 +73,7 @@ def get_uploaded_images_metadata():
     directory = os.path.dirname(os.path.dirname(__file__)) + '/Captured Images/uploaded/**/*.jpg'
     images_path = glob.glob(directory, recursive=True)
 
-    if DatabaseInterface.check_database_connection():
+    if DatabaseIO.check_database_connection():
         bulk_data = []
         for image_path in images_path:
             image_file = Image.open(image_path)
@@ -86,6 +86,6 @@ def get_uploaded_images_metadata():
             latitude = exif_gps['MAPLatitude']
             longitude = exif_gps['MAPLongitude']
             time = datetime.datetime.strptime(exif_gps['MAPCaptureTime'], '%Y_%m_%d_%H_%M_%S_%f')
-            bulk_data.append((time, latitude, longitude))
-        if DatabaseInterface.insert(bulk_data):
+            bulk_data.append((time, latitude, longitude, True))
+        if DatabaseIO.insert_uploaded_images(bulk_data):
             return True

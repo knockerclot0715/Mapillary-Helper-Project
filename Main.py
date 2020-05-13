@@ -1,9 +1,9 @@
 import subprocess
 import sys
 
-from Helper_Functions import FileOperations, MapillaryOperations
+from Helper_Functions import FileIO, MapillaryOperations
 
-FileOperations.directory_generator()
+FileIO.directory_generator()
 
 while True:
     subprocess.run(["clear"])
@@ -18,24 +18,24 @@ while True:
     print("    (-1) Quit")
     userOperation = input("Please Input Your Desired Operation: ")
     if userOperation == "0":
-        FileOperations.move_directory(
+        FileIO.move_directory(
             input("Please Input The Directory Of The Captured Images You Would Like To Import: "))
     elif userOperation == "1":
-        FileOperations.delete_thumbnails()
+        FileIO.delete_thumbnails()
     elif userOperation == "2":
         MapillaryOperations.process_images()
     elif userOperation == "3":
         MapillaryOperations.post_process_images()
     elif userOperation == "4":
-        FileOperations.delete_directory('/Captured Images/duplicates/')
+        FileIO.delete_directory('/Captured Images/duplicates/')
     elif userOperation == "5":
-        if FileOperations.get_uploaded_images_metadata():
-            FileOperations.delete_directory('/Captured Images/uploaded/')
+        if FileIO.get_uploaded_images_metadata():
+            FileIO.delete_directory('/Captured Images/uploaded/')
         else:
             print("Unable to delete images as not all metadata was successfully added into the database")
     elif userOperation == "6":
         MapillaryOperations.upload_images()
     elif userOperation == "7":
-        FileOperations.get_uploaded_images_metadata()
+        FileIO.get_uploaded_images_metadata()
     elif userOperation == "-1":
         sys.exit(0)
