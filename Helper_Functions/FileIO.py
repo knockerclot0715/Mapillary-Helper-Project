@@ -11,20 +11,38 @@ from PIL.ExifTags import TAGS
 from Helper_Functions import TextFormatter, DatabaseIO
 
 
-def delete_directory(directory):
+def delete_images(image_validity):
     subprocess.run(["clear"])
-    try:
-        directory = os.path.dirname(os.path.dirname(__file__)) + directory
-        if os.path.exists(directory):
-            shutil.rmtree(directory)
-        print(TextFormatter.GREEN + "Successfully Deleted Directory: " + TextFormatter.UNDERLINED + "{0}".format(
-            directory) + TextFormatter.RESET)
-    except OSError as errorMessage:
-        print(TextFormatter.RED + "Failed To Delete Directory: " + TextFormatter.UNDERLINED + "{0}".format(
-            errorMessage) + TextFormatter.RESET)
-    finally:
-        input(TextFormatter.YELLOW + TextFormatter.BLINK + "Press ENTER To Return..." + TextFormatter.RESET)
-        return None
+    if image_validity:
+        print("Deleting Valid Images")
+        image_directory = os.path.dirname(os.path.dirname(__file__)) + '/Captured Images/uploaded/**/*.jpg'
+    else:
+        print("Deleting Invalid Images")
+        image_directory = os.path.dirname(os.path.dirname(__file__)) + '/Captured Images/duplicates/**/*.jpg'
+    image_directory_list = glob.glob(image_directory, recursive=True)
+    for image in image_directory_list:
+        data = extract_image_exif(image, image_validity)
+        if DatabaseIO.insert_captured_images(data):
+            try:
+                os.remove(image_directory)
+            except OSError as error_message:
+                print(TextFormatter.RED + "Failed To Delete Image: " + TextFormatter.UNDERLINED + "{0}".format(
+                    error_message) + TextFormatter.RESET)
+
+
+def extract_image_exif(image_directory, image_validity):
+    image_file = Image.open(image_directory)
+    image_exif_data = image_file._getexif()
+    exif_data = {}
+    for tag, value in image_exif_data.items():
+        decoded = TAGS.get(tag, tag)
+        exif_data[decoded] = value
+    exif_gps_data = ast.literal_eval(exif_data['ImageDescription'])
+    latitude = exif_gps_data['MAPLatitude']
+    longitude = exif_gps_data['MAPLongitude']
+    time = datetime.datetime.strptime(exif_gps_data['MAPCaptureTime'], '%Y_%m_%d_%H_%M_%S_%f')
+    data = (time, latitude, longitude, image_validity)
+    return data
 
 
 def move_directory(source_directory):
@@ -68,24 +86,3 @@ def directory_generator():
     finally:
         return None
 
-
-def get_uploaded_images_metadata():
-    directory = os.path.dirname(os.path.dirname(__file__)) + '/Captured Images/uploaded/**/*.jpg'
-    images_path = glob.glob(directory, recursive=True)
-
-    if DatabaseIO.check_database_connection():
-        bulk_data = []
-        for image_path in images_path:
-            image_file = Image.open(image_path)
-            meta_data = image_file._getexif()
-            exif_data = {}
-            for tag, value in meta_data.items():
-                decoded = TAGS.get(tag, tag)
-                exif_data[decoded] = value
-            exif_gps = ast.literal_eval(exif_data['ImageDescription'])
-            latitude = exif_gps['MAPLatitude']
-            longitude = exif_gps['MAPLongitude']
-            time = datetime.datetime.strptime(exif_gps['MAPCaptureTime'], '%Y_%m_%d_%H_%M_%S_%f')
-            bulk_data.append((time, latitude, longitude, True))
-        if DatabaseIO.insert_uploaded_images(bulk_data):
-            return True

@@ -21,7 +21,7 @@ def check_database_connection():
         print("Error: {0}".format(error_message))
 
 
-def insert_uploaded_images(data):
+def insert_captured_images(data):
     try:
         directory = os.path.dirname(os.path.dirname(__file__)) + '/SQL/MapillaryDatabase.db3'
         database_connection = sqlite3.connect(directory)
@@ -29,6 +29,7 @@ def insert_uploaded_images(data):
                                         "Longitude, Valid_Image) VALUES ( ?, ?, ?, ?)", data)
         database_connection.commit()
         database_connection.close()
+        return True
     except sqlite3.Error as error_message:
         print("Database Error: {0}".format(error_message))
     except Exception as error_message:

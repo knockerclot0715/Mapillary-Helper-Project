@@ -14,7 +14,6 @@ while True:
     print("    (4) Delete Duplicated Images")
     print("    (5) Delete Uploaded Images")
     print("    (6) Upload Images")
-    print("    (7) Archive Image Coordinates")
     print("    (-1) Quit")
     userOperation = input("Please Input Your Desired Operation: ")
     if userOperation == "0":
@@ -27,15 +26,10 @@ while True:
     elif userOperation == "3":
         MapillaryOperations.post_process_images()
     elif userOperation == "4":
-        FileIO.delete_directory('/Captured Images/duplicates/')
+        FileIO.delete_images(False)
     elif userOperation == "5":
-        if FileIO.get_uploaded_images_metadata():
-            FileIO.delete_directory('/Captured Images/uploaded/')
-        else:
-            print("Unable to delete images as not all metadata was successfully added into the database")
+        FileIO.delete_images(True)
     elif userOperation == "6":
         MapillaryOperations.upload_images()
-    elif userOperation == "7":
-        FileIO.get_uploaded_images_metadata()
     elif userOperation == "-1":
         sys.exit(0)
