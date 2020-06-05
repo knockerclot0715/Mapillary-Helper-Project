@@ -7,6 +7,7 @@ FileIO.directory_generator()
 
 while True:
     subprocess.run(["clear"])
+    print("Mapillary Helper Main Menu")
     print("    (0) Import Images")
     print("    (1) Delete Thumbnail Images")
     print("    (2) Process Images")
