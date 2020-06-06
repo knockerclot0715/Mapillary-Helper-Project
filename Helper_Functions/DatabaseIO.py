@@ -25,8 +25,8 @@ def insert_captured_images(data):
     try:
         directory = os.path.dirname(os.path.dirname(__file__)) + '/SQL/MapillaryDatabase.db3'
         database_connection = sqlite3.connect(directory)
-        database_connection.executemany("INSERT or IGNORE INTO Captured_Images (Captured_Time_UTC, Latitude, "
-                                        "Longitude, Valid_Image) VALUES ( ?, ?, ?, ?)", data)
+        database_connection.execute("INSERT or IGNORE INTO Captured_Images (Captured_Time_UTC, Latitude, "
+                                    "Longitude, Valid_Image) VALUES ( ?, ?, ?, ?)", data)
         database_connection.commit()
         database_connection.close()
         return True
