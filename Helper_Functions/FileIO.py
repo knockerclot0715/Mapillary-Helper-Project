@@ -24,7 +24,7 @@ def delete_images(image_validity):
         data = extract_image_exif(image, image_validity)
         if DatabaseIO.insert_captured_images(data):
             try:
-                os.remove(image_directory)
+                os.remove(image)
             except OSError as error_message:
                 print(TextFormatter.RED + "Failed To Delete Image: " + TextFormatter.UNDERLINED + "{0}".format(
                     error_message) + TextFormatter.RESET)
