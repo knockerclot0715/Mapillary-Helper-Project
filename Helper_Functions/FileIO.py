@@ -48,7 +48,7 @@ def extract_image_exif(image_directory, image_validity):
 def move_directory(source_directory):
     subprocess.run(["clear"])
     try:
-        shutil.move(source_directory, os.path.dirname(os.path.dirname(__file__)) + '/Captured Images/Source Images')
+        subprocess.run(["mv", source_directory, os.path.dirname(os.path.dirname(__file__)) + "/Captured Images/Source Images"])
         print(TextFormatter.GREEN + "Successfully Moved Directory: " + TextFormatter.UNDERLINED + "{0}".format(
             source_directory) + TextFormatter.RESET)
     except OSError as errorMessage:
